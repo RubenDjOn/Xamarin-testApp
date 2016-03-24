@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Xamarin.Controls;
 
 namespace testApp
 {
@@ -15,6 +16,13 @@ namespace testApp
         {
             base.OnCreate(bundle);
 
+            AlertCenter.Default.Init(Application);
+
+            AlertCenter.Default.PostMessage("Knock knock!", "Who's there?", Resource.Drawable.Icon);
+            AlertCenter.Default.PostMessage("Interrupting cow.", "Interrupting cow who?",
+                                        Resource.Drawable.Icon, () => {
+                                            Console.WriteLine("Moo!");
+                                        });
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
@@ -33,6 +41,7 @@ namespace testApp
 
             translateButton.Click += (object sender, EventArgs e) =>
             {
+                AlertCenter.Default.PostMessage("Knock knock!", "Who's there?", Resource.Drawable.Icon);
                 // Translate user's alphanumeric phone number to numeric
                 translatedNumber = Core.PhonewordTranslator.ToNumber(phoneNumberText.Text);
                 if (String.IsNullOrWhiteSpace(translatedNumber))
